@@ -1,0 +1,65 @@
+body {
+    font-family: 'Segoe UI', sans-serif;
+    text-align: center;
+    margin: 0;
+    padding: 40px;
+    transition: background 0.5s ease, color 0.5s ease;
+}
+
+h1 {
+    color: #333;
+    margin-bottom: 40px;
+}
+
+/* Backgrounds for moods */
+body.happy {
+    background: linear-gradient(to right, #ffe259, #ffa751);
+    color: #000;
+}
+
+body.sad {
+    background: linear-gradient(to right, #536976, #292E49);
+    color: #000;
+}
+
+body.energetic {
+    background: linear-gradient(to right, #ff416c, #ff4b2b);
+    color: #000;
+}
+
+body.relaxed {
+    background: linear-gradient(to right, #c2e59c, #64b3f4);
+    color: #000;
+}
+
+/* Song list animation */
+#song-list li {
+    opacity: 0;
+    animation: fadeIn 0.4s ease forwards;
+    animation-delay: calc(var(--i) * 0.1s);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Favorite Button */
+button {
+    cursor: pointer;
+}
+
+.favorite-btn {
+    margin-left: 10px;
+    padding: 5px 10px;
+    background-color: #e53e3e;
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
