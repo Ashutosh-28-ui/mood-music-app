@@ -1,49 +1,138 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
     <title>Mood Music App</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            text-align: center;
+            background: #121212;
+            color: white;
+        }
+
+        h1 {
+            margin-top: 30px;
+        }
+
+        input {
+            padding: 10px;
+            width: 250px;
+            border-radius: 5px;
+            border: none;
+        }
+
+        button {
+            padding: 10px 15px;
+            margin: 5px;
+            border-radius: 5px;
+            border: none;
+            background: #1db954;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #17a74a;
+        }
+
+        .card {
+            background: #1e1e1e;
+            margin: 10px auto;
+            padding: 10px;
+            width: 60%;
+            border-radius: 10px;
+        }
+
+        a {
+            color: #1db954;
+        }
+    </style>
+
     <script>
         async function searchSongs() {
-          const query = document.getElementById("query").value;
-          const res = await fetch("mood?query=" + query);
-          const data = await res.json();
-          const container = document.getElementById("results");
-          container.innerHTML = "";
+            const query = document.getElementById("query").value;
 
-          if (data.tracks && data.tracks.items) {
-            data.tracks.items.forEach(track => {
-              const div = document.createElement("div");
-              div.innerHTML = `
-                <p><b>${track.name}</b> by ${track.artists[0].name}
-                  <a href="${track.external_urls.spotify}" target="_blank">Play</a>
-                  <button onclick="favoriteSong('${track.name}', '${track.artists[0].name}', '${track.external_urls.spotify}')">❤️</button>
-                </p>`;
-              container.appendChild(div);
-            });
-          } else {
-            container.innerHTML = "<p>No results</p>";
-          }
+            if (!query) {
+                alert("Enter a song name");
+                return;
+            }
+
+            document.getElementById("results").innerHTML = "⏳ Loading...";
+
+            try {
+                const res = await fetch("search?query=" + encodeURIComponent(query));
+                const data = await res.json();
+
+                const container = document.getElementById("results");
+                container.innerHTML = "";
+
+                if (data.tracks && data.tracks.items.length > 0) {
+
+                    data.tracks.items.forEach(track => {
+                        const div = document.createElement("div");
+                        div.className = "card";
+
+                        div.innerHTML = `
+                            <p>
+                                <b>${track.name}</b> by ${track.artists[0].name}
+                                <br>
+                                <a href="${track.external_urls.spotify}" target="_blank">▶ Play</a>
+                                <button onclick="favoriteSong('${track.name}', '${track.artists[0].name}', '${track.external_urls.spotify}')">
+                                    ❤️ Favorite
+                                </button>
+                            </p>
+                        `;
+
+                        container.appendChild(div);
+                    });
+
+                } else {
+                    container.innerHTML = "<p>No results found</p>";
+                }
+
+            } catch (error) {
+                document.getElementById("results").innerHTML = "❌ Error fetching songs";
+                console.error(error);
+            }
         }
 
         async function favoriteSong(song, artist, url) {
-          const formData = new URLSearchParams();
-          formData.append("song", song);
-          formData.append("artist", artist);
-          formData.append("url", url);
+            const formData = new URLSearchParams();
+            formData.append("song", song);
+            formData.append("artist", artist);
+            formData.append("url", url);
 
-          const res = await fetch("favorite", {
-            method: "POST",
-            body: formData
-          });
+            try {
+                const res = await fetch("favorite", {
+                    method: "POST",
+                    body: formData
+                });
 
-          alert(await res.text());
+                alert(await res.text());
+
+            } catch (error) {
+                alert("Error saving favorite");
+            }
+        }
+    </script>
+    <script>
+        function connectSpotify() {
+            window.location.href = "generate-token";
         }
     </script>
 </head>
+
 <body>
-<h2>Welcome to Mood Music App 🎶</h2>
+
+<h1>🎶 Mood Music App</h1>
+
 <input type="text" id="query" placeholder="Search songs...">
+<button onclick="connectSpotify()">🔗 Connect Spotify</button>
 <button onclick="searchSongs()">Search</button>
+
 <div id="results"></div>
+
 </body>
 </html>

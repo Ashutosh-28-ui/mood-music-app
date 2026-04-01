@@ -1,20 +1,38 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
     <title>Mood Music App</title>
-    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div class="container">
-    <h2>Mood Music App</h2>
 
-    <input type="text" id="searchBox" placeholder="Search songs...">
-    <button onclick="searchSongs()">Search</button>
+<h1>Mood Music App</h1>
 
-    <div id="results"></div>
-</div>
+<!-- SEARCH -->
+<form action="getSongs" method="get">
+    <select name="mood">
+        <option value="happy">Happy</option>
+        <option value="sad">Sad</option>
+        <option value="angry">Angry</option>
+    </select>
+    <button type="submit">Get Songs</button>
+</form>
 
-<script src="script.js"></script>
+<br>
+
+<!-- MOOD -->
+<form action="mood" method="get">
+    <select name="mood">
+        <option value="happy">Happy</option>
+        <option value="sad">Sad</option>
+        <option value="angry">Angry</option>
+    </select>
+    <button type="submit">Get Songs</button>
+</form>
+
+<form action="search" method="get">
+    <input type="text" name="query" placeholder="Search songs..." required>
+    <button type="submit">Search</button>
+</form>
 </body>
 </html>

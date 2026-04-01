@@ -6,12 +6,13 @@ import java.sql.SQLException;
 
 public class DBConnector {
 
-    private static final String DB_URL = "jdbc:sqlite:musicapp.db"; // database in project root
+    // ✅ ABSOLUTE PATH (VERY IMPORTANT)
+    private static final String DB_URL =
+            "jdbc:sqlite:C:/Users/HP1/MOOD-BASED music recommendation system/musicapp.db";
 
-    // Get a database connection
     public static Connection getConnection() throws SQLException {
         try {
-            Class.forName("org.sqlite.JDBC"); // load SQLite driver
+            Class.forName("org.sqlite.JDBC");
         } catch (ClassNotFoundException e) {
             throw new SQLException("SQLite JDBC driver not found.", e);
         }

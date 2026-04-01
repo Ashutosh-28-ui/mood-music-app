@@ -1,15 +1,177 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Dashboard</title>
+    <meta charset="UTF-8">
+    <title>Dashboard - Mood Music App</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background: #121212;
+            color: white;
+            text-align: center;
+        }
+
+        h1 {
+            margin-top: 20px;
+        }
+
+        input {
+            padding: 10px;
+            width: 250px;
+            border-radius: 5px;
+            border: none;
+        }
+
+        button {
+            padding: 10px 15px;
+            margin: 5px;
+            border-radius: 5px;
+            border: none;
+            background: #1db954;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #17a74a;
+        }
+
+        .card {
+            background: #1e1e1e;
+            margin: 10px auto;
+            padding: 10px;
+            width: 60%;
+            border-radius: 10px;
+        }
+
+        a {
+            color: #1db954;
+        }
+
+        #favorites {
+            margin-top: 30px;
+        }
+    </style>
+
+    <script>
+        async function searchSongs() {
+            const query = document.getElementById("searchBox").value;
+
+            if (!query) {
+                alert("Enter a song name");
+                return;
+            }
+
+            document.getElementById("results").innerHTML = "⏳ Loading...";
+
+            try {
+                const res = await fetch("search?query=" + encodeURIComponent(query));
+                const data = await res.json();
+
+                const container = document.getElementById("results");
+                container.innerHTML = "";
+
+                if (data.tracks && data.tracks.items.length > 0) {
+                    data.tracks.items.forEach(track => {
+                        const div = document.createElement("div");
+                        div.className = "card";
+
+                        div.innerHTML = `
+                            <p>
+                                <b>${track.name}</b> by ${track.artists[0].name}
+                                <br>
+                                <a href="${track.external_urls.spotify}" target="_blank">▶ Play</a>
+                                <button onclick="favoriteSong('${track.name}', '${track.artists[0].name}', '${track.external_urls.spotify}')">❤️ Favorite</button>
+                            </p>
+                        `;
+
+                        container.appendChild(div);
+                    });
+                } else {
+                    container.innerHTML = "<p>No results found</p>";
+                }
+
+            } catch (err) {
+                document.getElementById("results").innerHTML = "❌ Error loading songs";
+                console.error(err);
+            }
+        }
+
+        async function favoriteSong(song, artist, url) {
+            const formData = new URLSearchParams();
+            formData.append("song", song);
+            formData.append("artist", artist);
+            formData.append("url", url);
+
+            try {
+                const res = await fetch("favorite", {
+                    method: "POST",
+                    body: formData
+                });
+
+                alert(await res.text());
+
+            } catch (err) {
+                alert("Error saving favorite");
+            }
+        }
+
+        function connectSpotify() {
+            window.location.href = "generate-token";
+        }
+        async function loadFavorites() {
+    try {
+        const res = await fetch("getFavorites");
+        const data = await res.json();
+
+        const container = document.getElementById("favorites");
+        container.innerHTML = "<h2>❤️ Your Favorites</h2>";
+
+        if (data.length === 0) {
+            container.innerHTML += "<p>No favorites yet</p>";
+            return;
+        }
+
+        data.forEach(song => {
+            const div = document.createElement("div");
+            div.className = "card";
+
+            div.innerHTML = `
+                <p>
+                    <b>${song.song}</b> by ${song.artist}
+                    <br>
+                    <a href="${song.url}" target="_blank">▶ Play</a>
+                </p>
+            `;
+
+            container.appendChild(div);
+        });
+
+    } catch (err) {
+        console.error(err);
+    }
+}
+        window.onload = loadFavorites;
+    </script>
 </head>
+
 <body>
-<h2>Spotify Search & Favorites</h2>
+
+<h1>🎧 Dashboard</h1>
+
+<!-- Spotify connect -->
+<button onclick="connectSpotify()">🔗 Connect Spotify</button>
+
+<br><br>
+
+<!-- Search -->
 <input type="text" id="searchBox" placeholder="Search songs...">
 <button onclick="searchSongs()">Search</button>
 
+<!-- Results -->
 <div id="results"></div>
+<div id="favorites"></div>
 
-<script src="script.js"></script>
 </body>
 </html>

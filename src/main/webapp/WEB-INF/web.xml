@@ -7,64 +7,86 @@
 
     <display-name>Mood Music App</display-name>
 
-    <!-- Servlets -->
+    <!-- ✅ Welcome File -->
+    <welcome-file-list>
+        <welcome-file>login.html</welcome-file>
+    </welcome-file-list>
+
+    <!-- ✅ Mood Servlet -->
     <servlet>
         <servlet-name>MoodServlet</servlet-name>
         <servlet-class>com.moodmusic.MoodServlet</servlet-class>
     </servlet>
+
     <servlet-mapping>
         <servlet-name>MoodServlet</servlet-name>
         <url-pattern>/getSongs</url-pattern>
     </servlet-mapping>
 
+    <!-- ✅ Search Servlet -->
+    <servlet>
+        <servlet-name>SearchServlet</servlet-name>
+        <servlet-class>com.moodmusic.SearchServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>SearchServlet</servlet-name>
+        <url-pattern>/search</url-pattern>
+    </servlet-mapping>
+
+    <!-- ✅ Login -->
     <servlet>
         <servlet-name>LoginServlet</servlet-name>
         <servlet-class>com.moodmusic.LoginServlet</servlet-class>
     </servlet>
+
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/login</url-pattern>
     </servlet-mapping>
 
+    <!-- ✅ Signup -->
     <servlet>
         <servlet-name>SignupServlet</servlet-name>
         <servlet-class>com.moodmusic.SignupServlet</servlet-class>
     </servlet>
+
     <servlet-mapping>
         <servlet-name>SignupServlet</servlet-name>
         <url-pattern>/signup</url-pattern>
     </servlet-mapping>
 
+    <!-- ✅ Favorite -->
     <servlet>
         <servlet-name>FavoriteServlet</servlet-name>
         <servlet-class>com.moodmusic.FavoriteServlet</servlet-class>
     </servlet>
+
     <servlet-mapping>
         <servlet-name>FavoriteServlet</servlet-name>
         <url-pattern>/favorite</url-pattern>
     </servlet-mapping>
+
+    <!-- ✅ Spotify Token -->
     <servlet>
         <servlet-name>TokenGeneratorServlet</servlet-name>
         <servlet-class>com.moodmusic.TokenGeneratorServlet</servlet-class>
     </servlet>
+
     <servlet-mapping>
         <servlet-name>TokenGeneratorServlet</servlet-name>
         <url-pattern>/generate-token</url-pattern>
     </servlet-mapping>
 
+    <!-- ✅ Callback -->
     <servlet>
         <servlet-name>CallbackServlet</servlet-name>
         <servlet-class>com.moodmusic.CallbackServlet</servlet-class>
     </servlet>
+
     <servlet-mapping>
         <servlet-name>CallbackServlet</servlet-name>
         <url-pattern>/callback</url-pattern>
     </servlet-mapping>
-
-
-    <!-- Welcome File -->
-    <welcome-file-list>
-        <welcome-file>index.html</welcome-file>
-    </welcome-file-list>
 
 </web-app>
